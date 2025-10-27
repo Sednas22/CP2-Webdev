@@ -39,10 +39,21 @@ function gerarChavesRSA_Didaticas(p, q) {
  * @param {number} N - Módulo.
  * @returns {number[]} Array de números (os códigos cifrados).
  */
-function cifrarRSA_Didatico(mensagem, E, N) {
-    // Implemente a lógica de iteração e a fórmula x^E mod N.
-}
 
+
+function cifrarRSA_Didatico(mensagem, E, N) {
+    let mensagemCifra = [];
+    for(let i = 0; i < mensagem.length; i++){
+        let codigo = mensagem.charCodeAt(i);
+        let c = 1;
+        for(let j=0; j<E; j++){
+            c = (c * codigo) % N;
+        }
+        mensagemCifra.push(c);
+    }
+    return mensagemCifra;
+}
+//lógica por Gustavo Oliveira Francischini
 
 /**
  * Decifra o array de números usando a chave privada (D, N).
@@ -51,42 +62,21 @@ function cifrarRSA_Didatico(mensagem, E, N) {
  * @param {number} N - Módulo.
  * @returns {string} A string original.
  */
+
+
 function decifrarRSA_Didatico(mensagemCifrada, D, N) {
-    // Implemente a lógica de iteração e a fórmula C^D mod N.
+    let texto = "";
+    
+    for(let i = 0; i < mensagemCifrada.length; i++){
+        let c = mensagemCifrada[i];
+        let m = 1;
+
+        for(let j=0; j<D; j++){
+            m = (m*c)%N;
+        }
+
+        texto += String.fromCharCode(m);
+    }
+    return texto;
 }
-
-
-
-
-// Atbash:
-
-console.log(cifrarAtbash("OlaMundo")); 
-// Esperado: "OñzPfmwl" (Nota: pode variar dependendo da sua implementação de caracteres especiais/ASCII)
-
-// César:
-
-console.log(cifrarCesar("criptografia", 3)); // Esperado: "fulswrjudiia"
-console.log(cifrarCesar("fulswrjudiia", -3)); // Esperado: "criptografia"
-
-// Vigenère:
-
-const chaveV = "CHAVE";
-const codificadoV = cifrarVigenere("Enigma!", chaveV, 'codificar'); 
-console.log(codificadoV); // Ex: "Gñlgnx!"
-console.log(cifrarVigenere(codificadoV, chaveV, 'decodificar')); // Esperado: "Enigma!"
-
-// RSA (Usar a função gerarChavesRSA_Didaticas):
-
-const PRIMO_1 = 17;
-const PRIMO_2 = 19;
-const CHAVES = gerarChavesRSA_Didaticas(PRIMO_1, PRIMO_2); 
-
-const textoOriginal = "OLA"; 
-
-// 1. Cifrar com a Chave Pública
-const cifrado = cifrarRSA_Didatico(textoOriginal, CHAVES.publica.E, CHAVES.publica.N);
-console.log("RSA Cifrado:", cifrado); // Array de números
-
-// 2. Decifrar com a Chave Privada
-const decifrado = decifrarRSA_Didatico(cifrado, CHAVES.privada.D, CHAVES.privada.N);
-console.log("RSA Decifrado:", decifrado); // Esperado: "OLA"
+//lógica por Cainã Sandes Batista
